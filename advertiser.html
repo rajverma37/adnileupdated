@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advertiser Contact us</title>
+  <link rel="stylesheet" href="form.css">
+</head>
+
+<body>
+
+  <!-- Header Section -->
+  <header>
+    <div class="logo-section">
+      <img src="img/companylogo.png" alt="Company Logo" class="logo">
+      <h1 class="company-name">Adnile</h1>
+    </div>
+  </header>
+
+  <!-- Contact Form Section -->
+  <div class="contact-container">
+    <h2>Send us a message ( For advertiser )</h2>
+    <p>Fill out the form below and we'll get back to you within 24 hours</p>
+
+    <form id="advertiserForm" class="contact-form">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="firstName">First Name *</label>
+          <input type="text" name="firstName" required>
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Last Name *</label>
+          <input type="text" name="lastName" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="email">Email Address *</label>
+          <input type="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" name="phone">
+        </div>
+      </div>
+
+      <div class="form-group full-width">
+        <label for="company">Company Name</label>
+        <input type="text" name="company">
+      </div>
+
+      <div class="form-group full-width">
+        <label for="message">Message *</label>
+        <textarea name="message" rows="5" placeholder="Tell us about your project and goals..." required></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn">Send Message</button>
+
+      <div id="status" class="status"></div>
+    </form>
+
+    <script>
+
+      // === STATUS FUNCTIONS ===
+      function showStatus(type, message) {
+        const statusEl = document.getElementById("status");
+        statusEl.className = "status " + type; // reset + add type
+        statusEl.textContent = message;
+        statusEl.style.display = "block";
+
+        // auto-hide after 4s except loading
+        if (type !== "loading") {
+          setTimeout(() => { statusEl.style.display = "none"; }, 4000);
+        }
+      }
+
+      document.getElementById("advertiserForm").addEventListener("submit",
+
+        async function (event) {
+          event.preventDefault();
+
+          const firstName = this.firstName.value.trim();
+          const lastName = this.lastName.value.trim();
+          const email = this.email.value.trim();
+          const phone = this.phone.value.trim();
+          const company = this.company.value.trim();
+          const message = this.message.value.trim();
+
+
+          // show loading
+          showStatus("loading", "Sending your message...");
+
+
+
+          const formData = {
+            name: firstName + " " + lastName,
+            email: email,
+            phone: phone,
+            company: company,
+            message: message
+          };
+
+          console.log(formData);
+
+          try {
+            await fetch("https://script.google.com/macros/s/AKfycbyR4JxNbcVZ8nwYRnSAS5T0SM0t4_A5o9srphZOYceeOzn9dKsZFf-k6JciskgnbIbX/exec", {  //  replace with your Apps Script URL
+              method: "POST",
+              mode: "no-cors",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(formData)
+            });
+
+
+            this.reset();
+            showStatus("success", "✅ Thank you! Your message has been sent.");
+
+            // document.getElementById("status").innerText = "Thank you! Your message has been sent.";
+            // this.reset();
+
+          } catch (error) {
+            showStatus("error", "⚠ Something went wrong. Please try again.");
+            // document.getElementById("status").innerText = "An error occurred. Please try again.";
+          }
+        });
+
+    </script>
+
+  </div>
+
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,10 @@
+how to update website codee
+
+git add . ( it will prepare all new files)
+git commit -m "new margin" ( what we change)
+git push
+
+
+* error while push file code mistmatch then two ways to fix  
+1. pull from github repo before push 
+2. use ( git push -u origin main --force ) to push all new code from pc to github ( it can loose data or code , if something added on github but not in pc folder )
